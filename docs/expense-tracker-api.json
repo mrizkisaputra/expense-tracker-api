@@ -1,0 +1,315 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Expense Tracker API",
+    "description": "API for managing expense tracker",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://{environment}.localhost:8080/api/v1/",
+      "variables": {
+        "environment": {
+          "default": "dev",
+          "enum": [
+            "dev",
+            "QA",
+            "production"
+          ]
+        }
+      }
+    }
+  ],
+  "paths": {
+    "/register": {
+      "post": {
+        "tags": [],
+        "summary": "registrasi untuk pengguna baru",
+        "description": "create pengguna baru",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Content-Type",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "application/json"
+            },
+            "style": "simple"
+          }
+        ],
+        "requestBody": {
+          "description": "menambahkan pengguna baru ke sistem",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "maxLength": 100,
+                    "required": true
+                  },
+                  "email": {
+                    "type": "string",
+                    "maxLength": 100,
+                    "uniqueItems": true,
+                    "format": "email",
+                    "required": true
+                  },
+                  "password": {
+                    "type": "string",
+                    "maxLength": 100,
+                    "required": true
+                  }
+                }
+              },
+              "example": {
+                "name": "mrizkisaputra",
+                "email": "mrizkisaputra@gmail.com",
+                "password": "rahasia123"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "success register",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "integer"
+                    },
+                    "timestamp": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "object"
+                    }
+                  }
+                },
+                "example": {
+                  "status": 201,
+                  "timestamp": "2024-10-08 15:04:55",
+                  "message": "added successfully",
+                  "data": {
+                    "id": "923681151",
+                    "name": "mrizkisaputra",
+                    "email": "mrizkisaputra@gmail.com",
+                    "password": "$2a$12$NWVCCslrHqHjnFpHIZqLMOD0YyPBUzVVcuibT.yw/ZQ9g/2nmLF/K",
+                    "created_at": 1728368809
+                  }
+                }
+              }
+            },
+            "headers": {
+            }
+          },
+          "400": {
+            "description": "failed register because validation error",
+            "headers": {
+
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "integer"
+                    },
+                    "timestamp": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "errors": {
+                      "type": "array"
+                    }
+
+                  }
+                },
+                "example": {
+                  "status": 400,
+                  "timestamp": "2024-10-08 15:04:55",
+                  "message": "Validation errors",
+                  "errors": [
+                    {
+                      "field": "Name",
+                      "rejected_value": "",
+                      "message": "REQUIRED"
+                    },
+                    {
+                      "field": "Email",
+                      "rejected_value": "",
+                      "message": "EMAIL_FORMAT"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "failed register because server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "integer"
+                    },
+                    "timestamp": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "status": 500,
+                  "timestamp": "2024-10-08 15:04:55",
+                  "message": "Internal server error"
+                }
+              }
+            }
+          }
+
+        },
+        "security": []
+      }
+    },
+    "/login": {
+      "post": {
+        "tags": [],
+        "summary": "Login untuk pengguna",
+        "description": "",
+        "operationId": "",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "required": true,
+                    "format": "email",
+                    "maxLength": 100
+                  },
+                  "password": {
+                    "type": "string",
+                    "required": true,
+                    "maxLength": 100
+                  }
+                }
+              },
+              "example": {
+                "email": "mrizkisaputra@gmail.com",
+                "password": "rahasia123"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "success login",
+            "headers": {
+              "cookie": {
+                "description": "jw_token"
+              }
+            },
+            "content": {
+              "application/json": {
+                "example": {
+                  "status": 200,
+                  "message": "login success",
+                  "jwt_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "validation error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "integer"
+                    },
+                    "timestamp": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "errors": {
+                      "type": "array"
+                    }
+                  }
+                },
+                "example": {
+                  "status": 400,
+                  "timestamp": "2024-10-08 15:04:55",
+                  "message": "Validation errors",
+                  "errors": [
+                    {
+                      "field": "Email",
+                      "rejected_value": "",
+                      "message": "EMAIL_FORMAT"
+                    },
+                    {
+                      "field": "Password",
+                      "rejected_value": "",
+                      "message": "TO_LONG"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "integer"
+                    },
+                    "timestamp": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "status": 500,
+                  "timestamp": "2024-10-08 15:04:55",
+                  "message": "Internal server error"
+                }
+              }
+            }
+          }
+        },
+        "security": []
+      }
+    }
+  }
+}
