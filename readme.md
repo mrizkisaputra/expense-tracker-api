@@ -4,13 +4,16 @@ This is a API RESTfull for managing expenses tracker.
 ## Architecture
 ![archistecture expense tracker](./docs/architecture-expense-tracker-api.png)
 
+## Design Schema Database
+<img align="center" src="./docs/skema-database.png">
+
 
 ## Features
 Berikut adalah fitur-fitur yang ada di **_Expense Tracker API_**:
 - _Registrasi_ untuk pengguna  baru
 - _Login_ untuk pengguna, hasilkan dan validasi token _JWT_ untuk menangani _authentication_ dari pengguna.
 - Menambahkan pengeluaran baru
-- Menghapus pengeluaran yang ada
+- Menghapus pengeluaran yang ada (soft delete)
 - Memperbaharui pengeluaran yang ada
 - pengguna dapat melihat dan memfilter daftar pengeluaran mereka berdasarkan beberapa kriteria waktu yang berbeda:  
   - Minggu lalu - Filter pengeluaran yang dibuat dalam 7 hari terakhir
@@ -25,6 +28,7 @@ Berikut adalah fitur-fitur yang ada di **_Expense Tracker API_**:
 - [Docker](https://www.docker.com/) (Containerize)
 
 ## Framework and Library
+- [Golang JWT](https://github.com/golang-jwt/jwt) (Access token)
 - [GoFiber](https://gofiber.io/) (HTTP framework)
 - [Logrus](https://github.com/sirupsen/logrus) (Logger)
 - [Godotenv](https://github.com/joho/godotenv) (configuration)
@@ -32,6 +36,8 @@ Berikut adalah fitur-fitur yang ada di **_Expense Tracker API_**:
 - [Golang migrate]() (database migration)
 - [Go Playground Validator](https://github.com/go-playground/validator) (Validation)
 
+## Api Documentation
+API spec ada di dalam directory [docs](./docs/expense-tracker-api.json)
 
 ## Installation
 ### Run with Docker
