@@ -1,0 +1,16 @@
+version: "3"
+
+services:
+
+  rdbms:
+    container_name: mysql-container
+    image: mysql
+    ports:
+      - "3300:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: f6gJhwCjORerfoLHi93OjViarA2sz1
+      MYSQL_USER: expense
+      MYSQL_PASSWORD: 4PG5tmTC9CMdWqmMIXZtARNctiBBQr
+      MYSQL_DATABASE: expense
+    volumes:
+      - ./db/mysql:/var/lib/mysql
