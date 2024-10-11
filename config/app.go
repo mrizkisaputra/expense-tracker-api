@@ -1,6 +1,9 @@
 package config
 
 import (
+	"expense-tracker-api/internal/auth-service/delivery"
+	"expense-tracker-api/internal/auth-service/repositories"
+	"expense-tracker-api/internal/auth-service/usecase"
 	"github.com/go-playground/validator/v10"
 	"github.com/gofiber/fiber/v2"
 	"github.com/sirupsen/logrus"
@@ -17,10 +20,20 @@ type Bootstrap struct {
 
 func NewBootstrap(config *BootstrapConfig) {
 	// setup repositories
+	userRepo := repositories.NewUserRepository()
 
 	// setup usecase
+	userUseCase := usecase.NewUserUseCase(userRepo, config.Log, config.Validate, config.DB)
+
+	// setup controllers
+	userController := delivery.NewUserController(userUseCase)
 
 	// setup midlleware
 
 	//setup routes
+	authRoute := delivery.AuthRoute{
+		App:            config.App,
+		UserController: userController,
+	}
+	authRoute.SetupRoutes()
 }
