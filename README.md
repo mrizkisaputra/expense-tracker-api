@@ -13,7 +13,7 @@
 | [7](7)    | DELETE ``/api/v1/expenses/{idExpense}`` | ✅             | Remove user expenses   |
 | [8](8)    | GET ``/api/v1/expenses?``               | ✅             |                        |
 
-## How to running di applications
+## How to running this applications
 ```shell
     docker compose up -d
     
