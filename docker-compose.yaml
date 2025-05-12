@@ -1,0 +1,22 @@
+# docker compose up -d {membuat dan menjalankan container}
+# docker compose down -v {menghapus container, network, dan volume}
+
+version: "3.8"
+
+services:
+
+  postgresql:
+    image: postgres:17
+    container_name: expense-tracker-postgresql
+    ports:
+      - "5430:5432"
+    environment:
+      - POSTGRES_DB=expensedb
+      - POSTGRES_USER=expense
+      - POSTGRES_PASSWORD=expense
+    volumes:
+      - postgresql-data:/var/lib/postgresql/data
+
+volumes:
+  postgresql-data:
+    name: expense-postgresql-data
