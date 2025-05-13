@@ -1,5 +1,9 @@
 # Expense Tracker
 
+## Schema Database
+
+![schema database](./schemadb.png)
+
 ## Features
 
 | No        | Features                                | Auth Requires | Information            |
