@@ -3,7 +3,6 @@ package com.expense.entities;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -19,5 +18,5 @@ public class Role {
     private String name;
 
     @OneToMany(mappedBy = "role") @JsonIgnore
-    private List<Users> users;
+    private List<User> users;
 }

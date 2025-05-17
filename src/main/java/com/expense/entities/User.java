@@ -3,7 +3,6 @@ package com.expense.entities;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
@@ -16,22 +15,25 @@ import java.util.List;
 
 @Entity @Table(name = "s_users")
 @Data @NoArgsConstructor @AllArgsConstructor
-public class Users implements UserDetails {
+public class User implements UserDetails {
     @Id @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
+
     @Column(unique = true, nullable = false, length = 100)
     private String username;
-    @Column(unique = true, nullable = false, length = 100)
-    private String email;
+
     private Boolean accountNonExpired = true;
     private Boolean accountNonLocked = true;
     private Boolean accountEnabled = true;
     private Long createdAt;
+
     @OneToOne(mappedBy = "users") @JsonIgnore
-    private UsersPassword usersPassword;
+    private UserPassword usersPassword;
+
     @ManyToOne @JsonIgnore
     @JoinColumn(name = "id_role", referencedColumnName = "id")
     private Role role;
+
     @OneToMany(mappedBy = "users") @JsonIgnore
     private List<Expense> expenses;
 

@@ -30,12 +30,9 @@ CREATE TABLE s_users
     account_non_expired boolean,
     account_non_locked  boolean,
     created_at          bigint,
-    email               character varying(100) NOT NULL,
     username            character varying(100) NOT NULL,
     id_role             character varying(255)
 );
-ALTER TABLE ONLY s_users
-    ADD CONSTRAINT uk2lcv26kt28p27enwkw01c2s1g UNIQUE (email);
 ALTER TABLE ONLY s_users
     ADD CONSTRAINT ukg6w3g55j7mm7jfji66cc4w16q UNIQUE (username);
 

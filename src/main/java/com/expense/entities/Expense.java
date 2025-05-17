@@ -3,7 +3,6 @@ package com.expense.entities;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -25,7 +24,7 @@ public class Expense {
 
     @ManyToOne @JsonIgnore
     @JoinColumn(name = "id_user", referencedColumnName = "id")
-    private Users users;
+    private User users;
 
     @PrePersist
     public void prePersist() {
