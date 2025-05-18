@@ -10,7 +10,6 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -62,10 +61,30 @@ public class ExpenseController {
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     private ResponseEntity<Object> handleGetAllExpenses(
             @AuthenticationPrincipal User user,
+            @Valid @ModelAttribute ExpenseFilterDto expenseFilter,
             Pageable pageable
     ) {
-        Page<Expense> page = expenseRepository.findAllByUsersId(user.getId(), pageable);
-        log.info("size={} page={} sort={}",pageable.getPageSize(), pageable.getPageNumber(), pageable.getSort());
+        Page<Expense> page;
+
+        // periksa apakah ada query parameter 'filter'
+        if (expenseFilter.getFilter() != null) {
+            long now = System.currentTimeMillis();
+
+            // periksa value dari filter itu apa
+            Long fromDate = switch (expenseFilter.getFilter().toLowerCase()) {
+                case "week" -> now - 7L * 24 * 60 * 60 * 1000; // 7 hari
+                case "month" -> now - 30L * 24 * 60 * 60 * 1000; // kira-kira 30 hari
+                case "3month" -> now - 90L * 24 * 60 * 60 * 1000; // kira-kira 90 hari
+                default -> null;
+            };
+
+            // lakukan query dengan filter
+            page = this.expenseRepository.findAllByUsersIdAndCreatedAtBetween(user.getId(), fromDate, now, pageable);
+            log.info("From Date: {}", fromDate);
+        } else {
+            // lakukan query tanpa filter
+            page = expenseRepository.findAllByUsersId(user.getId(), pageable);
+        }
 
         Paging paging = Paging.builder()
                 .totalElement(page.getTotalElements()).totalPage(page.getTotalPages()).size(page.getSize()).build();
