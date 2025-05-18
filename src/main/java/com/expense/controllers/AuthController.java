@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.RestController;
 @AllArgsConstructor
 public class AuthController {
     private final AuthService authService;
-    private final JwtService jwtService;
 
     @PostMapping(path = "/signup", consumes = MediaType.APPLICATION_JSON_VALUE)
     private ResponseEntity<Object> handleSignup(@RequestBody @Valid RegisterUserDto request) throws UsernameAlreadyUsedException {
