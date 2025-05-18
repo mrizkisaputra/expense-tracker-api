@@ -17,9 +17,15 @@ CREATE TABLE s_password
 
 CREATE TABLE s_roles
 (
-    id   character varying(255) NOT NULL,
-    name character varying(255) NOT NULL
+    id          character varying(255) NOT NULL,
+    created_at  timestamp(6) without time zone,
+    description character varying(255) NOT NULL,
+    name        character varying(255) NOT NULL,
+    updated_at  timestamp(6) without time zone,
+    CONSTRAINT s_roles_name_check CHECK (((name)::text = ANY ((ARRAY['USER':: character varying, 'ADMIN':: character varying, 'SUPER_ADMIN':: character varying])::text[])
+) )
 );
+
 ALTER TABLE ONLY s_roles
     ADD CONSTRAINT uk5rwpfy9j06iisbgxvr7k3s96 UNIQUE (name);
 

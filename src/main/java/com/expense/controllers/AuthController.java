@@ -2,6 +2,7 @@ package com.expense.controllers;
 
 import com.expense.dto.*;
 import com.expense.exceptions.JwtTokenInvalidException;
+import com.expense.exceptions.RoleNotFoundException;
 import com.expense.exceptions.UsernameAlreadyUsedException;
 import com.expense.services.AuthService;
 import com.expense.services.JwtService;
@@ -22,7 +23,9 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping(path = "/signup", consumes = MediaType.APPLICATION_JSON_VALUE)
-    private ResponseEntity<Object> handleSignup(@RequestBody @Valid RegisterUserDto request) throws UsernameAlreadyUsedException {
+    private ResponseEntity<Object> handleSignup(
+            @RequestBody @Valid RegisterUserDto request
+    ) throws UsernameAlreadyUsedException, RoleNotFoundException {
         UserResponse userResponse = authService.signup(request);
         ApiResponse apiResponse = ApiResponse.builder()
                 .status(HttpStatus.CREATED).message("signup successful")

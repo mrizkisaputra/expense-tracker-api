@@ -5,9 +5,11 @@ import com.expense.dto.LoginUserDto;
 import com.expense.dto.RegisterUserDto;
 import com.expense.dto.UserResponse;
 import com.expense.entities.Role;
+import com.expense.entities.RoleEnum;
 import com.expense.entities.User;
 import com.expense.entities.UserPassword;
 import com.expense.exceptions.JwtTokenInvalidException;
+import com.expense.exceptions.RoleNotFoundException;
 import com.expense.exceptions.UsernameAlreadyUsedException;
 import com.expense.repositories.RoleRepository;
 import com.expense.repositories.UserPasswordRepository;
@@ -33,16 +35,15 @@ public class AuthService {
     private AuthenticationManager authenticationManager;
     private JwtService jwtService;
 
-    @Transactional(rollbackFor = {UsernameAlreadyUsedException.class})
-    public UserResponse signup(RegisterUserDto request) throws UsernameAlreadyUsedException {
+    @Transactional(rollbackFor = {UsernameAlreadyUsedException.class, RoleNotFoundException.class})
+    public UserResponse signup(RegisterUserDto request) throws UsernameAlreadyUsedException, RoleNotFoundException {
         Boolean exists = userRepository.existsByUsername(request.getEmail());
         if (exists) {
             throw new UsernameAlreadyUsedException("email sudah terpakai", HttpStatus.CONFLICT);
         }
 
-        Role role = new Role();
-        role.setId("e65f1f6b-cf0e-4c93-a042-af55a845da79");
-        role.setName("USER");
+        Role role = roleRepository.findByName(RoleEnum.USER)
+                .orElseThrow(() -> new RoleNotFoundException(HttpStatus.NOT_FOUND, "role not found"));
 
         User userEntity = new User();
         userEntity.setUsername(request.getEmail());
@@ -79,7 +80,7 @@ public class AuthService {
 
     private UserResponse buildUserResponse(User user) {
         return UserResponse.builder()
-                .id(user.getId()).email(user.getUsername()).role(user.getRole().getName())
+                .id(user.getId()).email(user.getUsername()).role(user.getRole().getName().toString())
                 .accountNonExpired(user.getAccountNonExpired()).accountNonLocked(user.getAccountNonLocked())
                 .accountEnabled(user.getAccountEnabled()).build();
     }

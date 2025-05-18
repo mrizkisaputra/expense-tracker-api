@@ -3,6 +3,7 @@ package com.expense;
 import com.expense.dto.ApiErrorResponse;
 import com.expense.exceptions.ExpenseNotFoundException;
 import com.expense.exceptions.JwtTokenInvalidException;
+import com.expense.exceptions.RoleNotFoundException;
 import com.expense.exceptions.UsernameAlreadyUsedException;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.*;
@@ -111,5 +112,10 @@ public class RestExceptionController extends ResponseEntityExceptionHandler {
         return ResponseEntity.status(apiErrorResponse.getStatus()).body(apiErrorResponse);
     }
 
-
+    @ExceptionHandler({RoleNotFoundException.class})
+    protected ResponseEntity<Object> handleRoleNotFound(RoleNotFoundException ex) {
+        ApiErrorResponse apiErrorResponse = ApiErrorResponse.builder()
+                .status(ex.getStatus()).message(ex.getMessage()).build();
+        return ResponseEntity.status(apiErrorResponse.getStatus()).body(apiErrorResponse);
+    }
 }
