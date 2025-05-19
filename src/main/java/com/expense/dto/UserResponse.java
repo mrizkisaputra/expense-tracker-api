@@ -8,7 +8,7 @@ public class UserResponse {
     private String id;
     private String email;
     private String role;
-    private String createdAt;
+    private Long createdAt;
     private Boolean accountNonExpired;
     private Boolean accountNonLocked;
     private Boolean accountEnabled;

@@ -5,10 +5,13 @@ import com.expense.repositories.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -67,6 +70,9 @@ public class SecurityConfig {
                 )
                 .authorizeHttpRequests(authConfigurer -> authConfigurer
                         .requestMatchers("/api/v1/auth/**").permitAll()
+                        .requestMatchers("/api/v1/expenses/**").hasRole("USER")
+                        .requestMatchers("/api/v1/users/me").hasAnyRole("USER", "ADMIN", "SUPER_ADMIN")
+                        .requestMatchers("/api/v1/users").hasAnyRole("ADMIN", "SUPER_ADMIN")
                         .anyRequest().authenticated()
                 )
                 .authenticationProvider(authenticationProvider)

@@ -1,0 +1,56 @@
+### Signup as a new user
+POST http://localhost:8080/api/v1/auth/signup
+Content-Type: application/json
+
+{
+  "email": "saputra@gmail.com",
+  "password": "saputra"
+}
+
+### Login and get JWT Token
+POST http://localhost:8080/api/v1/auth/login
+Content-Type: application/json
+
+{
+  "email": "rizki@gmail.com",
+  "password": "rizki"
+}
+> {% client.global.set("access_token", response.body.jwt.accessToken) %}
+
+### Login and get JWT Token as user role SUPER_ADMIN
+#POST http://localhost:8080/api/v1/auth/login
+#Content-Type: application/json
+#
+#{
+#  "email": "super.admin@gmail.com",
+#  "password": "superadmin"
+#}
+#> {% client.global.set("access_token", response.body.jwt.accessToken) %}
+
+### Take authenticated User
+GET http://localhost:8080/api/v1/users/me
+Authorization: Bearer {{access_token}}
+
+### Take all users have role User
+GET http://localhost:8080/api/v1/users
+Authorization: Bearer {{access_token}}
+
+### Take all users have role User with pagination
+GET http://localhost:8080/api/v1/users?size=1
+Authorization: Bearer {{access_token}}
+
+
+### Add a new Expense
+POST http://localhost:8080/api/v1/expenses
+Content-Type: application/json
+Authorization: Bearer {{access_token}}
+
+{
+  "description": "Dinner",
+  "amount": 100,
+  "category": "food"
+}
+
+### Take all user expenses
+GET http://localhost:8080/api/v1/expenses
+Authorization: Bearer {{access_token}}

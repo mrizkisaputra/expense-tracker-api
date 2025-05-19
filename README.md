@@ -14,21 +14,19 @@
 
 ## Endpoint
 
-| No | Endpoints                                                   | Auth Requires | Information                                                                                         |
-|----|-------------------------------------------------------------|---------------|-----------------------------------------------------------------------------------------------------|
-| 1  | POST ``/api/v1/auth/register``                              | ❌             | [Sign up as a new user](#signup)                                                                    |
-| 2  | POST ``/api/v1/auth/login``                                 | ❌             | [Login and get JWT](#login)                                                                         |
-| 2  | GET ``/api/v1/users/me``                                    | ✅             | [Take current users](#current_user)                                                                 |
-| 3  | GET  ``/api/v1/expenses/{idExpense}``                       | ✅             | [Take detail expenses ](#detail_expenses)                                                           |
-| 4  | POST ``/api/v1/expenses``                                   | ✅             | [Add new expenses](#add_new_expenses)                                                               |
-| 5  | GET  ``/api/v1/expenses``                                   | ✅             | [Take all user expenses](#take_all_expenses)                                                        |
-| 6  | PUT  ``/api/v1/expenses/{idExpense}``                       | ✅             | [Edit user expenses](#edit_expenses)                                                                |
-| 7  | DELETE ``/api/v1/expenses/{idExpense}``                     | ✅             | [Remove user expenses](#remove_expenses)                                                            |
-| 8  | GET ``/api/v1/expenses?size=10&page=0&sort=createdAt,desc`` | ✅             | [Take all user expenses with pagination and sorting](#take_all_expense_with_pagination_and_sorting) |
-| 9  | GET ``/api/v1/expenses?filter=week``                        | ✅             | [Take all filtered expenses](#take_all_filtered_expenses)                                           |
-| 10 | GET ``/api/v1/expenses?filter=week&page=0&size=10``         | ✅             | [Take all filtered and pagination expenses](#take_all_filtered_pagination_expenses)                 |
+| No | Endpoints                                                   | Auth Requires | Authorize                  | Information                                  |
+|----|-------------------------------------------------------------|---------------|----------------------------|----------------------------------------------|
+| 1  | POST ``/api/v1/auth/register``                              | ❌             | -                          | [Sign up as a new user](#signup)             |
+| 2  | POST ``/api/v1/auth/login``                                 | ❌             | -                          | [Login and get JWT](#login)                  |
+| 3  | GET ``/api/v1/users/me``                                    | ✅             | (USER, ADMIN, SUPER_ADMIN) | [Take authenticated users](#current_user)    |
+| 4  | GET ``/api/v1/users``                                       | ✅             | (ADMIN, SUPER_ADMIN)       | [Take all users have role User](#take_all_user)           |
+| 5  | GET  ``/api/v1/expenses/{idExpense}``                       | ✅             | (USER)                     | [Take detail expenses ](#detail_expenses)    |
+| 6  | POST ``/api/v1/expenses``                                   | ✅             | (USER)                     | [Add new expenses](#add_new_expenses)        |
+| 7  | GET  ``/api/v1/expenses``                                   | ✅             | (USER)                     | [Take all user expenses](#take_all_expenses) |
+| 8  | PUT  ``/api/v1/expenses/{idExpense}``                       | ✅             | (USER)                     | [Edit user expenses](#edit_expenses)         |
+| 9  | DELETE ``/api/v1/expenses/{idExpense}``                     | ✅             | (USER)                     | [Remove user expenses](#remove_expenses)     |
 
-### <a id="signup">Signup as a New User</a>
+### <a id="signup">1. Signup as a New User</a>
 
 ```json
 {
@@ -37,7 +35,7 @@
 }
 ```
 
-### <a id="login">Login and Get a JWT token</a>
+### <a id="login">2. Login and Get a JWT token</a>
 
 ```json
 {
@@ -46,7 +44,7 @@
 }
 ```
 
-### <a id="current_user">Take Current User</a>
+### <a id="current_user">3. Take Authenticated User</a>
 
 Required Header
 
@@ -54,7 +52,9 @@ Required Header
 Authorization: Bearer your token
 ```
 
-### <a id="detail_expenses">Take Detail Expenses</a>
+### <a id="take_all_user">4. Take all User have role user</a>
+
+**Take all users with pagination ```/api/v1/users?size=10&page=0```**
 
 Required Header
 
@@ -62,7 +62,15 @@ Required Header
 Authorization: Bearer your token
 ```
 
-### <a id="add_new_expenses">Add New Expenses</a>
+### <a id="detail_expenses">5. Take Detail Expenses</a>
+
+Required Header
+
+```
+Authorization: Bearer your token
+```
+
+### <a id="add_new_expenses">6. Add New Expenses</a>
 
 Required Header
 
@@ -78,7 +86,18 @@ Authorization: Bearer your token
 }
 ```
 
-### <a id="take_all_expenses">Take all User Expenses</a>
+### <a id="take_all_expenses">7. Take all User Expenses</a>
+
+**Take all User Expense with pagination and sorting ```/api/v1/expenses?size=10&page=0&sort=createdAt,desc```**
+
+**Take all filtered User Expense**
+
+- last week ```/api/v1/expenses?filter=week```
+- past month ```/api/v1/expenses?filter=month```
+- last 3 month ```/api/v1/expenses?filter=3month```
+
+**Take all Filtered and Pagination Expenses**
+```/api/v1/expenses?filter=week&size=10&page=0&sort=createdAt,desc```
 
 Required Header
 
@@ -86,7 +105,7 @@ Required Header
 Authorization: Bearer your token
 ```
 
-### <a id="edit_expenses">Edit Expense</a>
+### <a id="edit_expenses">8. Edit Expense</a>
 
 Required Header
 
@@ -102,7 +121,7 @@ Authorization: Bearer your token
 }
 ```
 
-### <a id="remove_expenses">Remove Expense</a>
+### <a id="remove_expenses">9. Remove Expense</a>
 
 Required Header
 
@@ -110,35 +129,6 @@ Required Header
 Authorization: Bearer your token
 ```
 
-### <a id="take_all_expense_with_pagination_and_sorting">Take all Expense with Pagination & Sorting</a>
-
-Required Header
-
-```
-Authorization: Bearer your token
-```
-
-### <a id="take_all_filtered_expenses">Take all filtered Expenses</a>
-
-last week ``/api/v1/expenses?filter=week``
-
-past month ``/api/v1/expenses?filter=month``
-
-last 3 month ``/api/v1/expenses?filter=3month``
-
-Required Header
-
-```
-Authorization: Bearer your token
-```
-
-### <a id="take_all_filtered_pagination_expenses">Take all Filtered and Pagination Expenses</a>
-
-Required Header
-
-```
-Authorization: Bearer your token
-```
 
 ## Tech Stack
 

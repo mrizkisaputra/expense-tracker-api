@@ -71,7 +71,7 @@ public class AuthService {
         // generate jwt token
         Map<String, Object> claims = new HashMap<>();
         claims.put("id", user.getId());
-        claims.put("role", user.getRole());
+        claims.put("role", user.getRole().getName());
         String token = jwtService.generateToken(user, claims);
 
         return JwtTokenResponse.builder()
@@ -82,6 +82,6 @@ public class AuthService {
         return UserResponse.builder()
                 .id(user.getId()).email(user.getUsername()).role(user.getRole().getName().toString())
                 .accountNonExpired(user.getAccountNonExpired()).accountNonLocked(user.getAccountNonLocked())
-                .accountEnabled(user.getAccountEnabled()).build();
+                .accountEnabled(user.getAccountEnabled()).createdAt(user.getCreatedAt()).build();
     }
 }

@@ -9,15 +9,15 @@ import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 
-@Component @Order(1)
+@Component @Order(2)
 @Slf4j
 @RequiredArgsConstructor
-public class RoleSeeder implements ApplicationListener<ContextRefreshedEvent> {
+public class AdminSeeder implements ApplicationListener<ContextRefreshedEvent> {
     private final UserSeederService userSeederService;
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
-        log.info("RoleSeeder started");
-        this.userSeederService.createRole();
+        log.info("AdminSeeder started");
+        this.userSeederService.createSuperAdministrator();
     }
 }
